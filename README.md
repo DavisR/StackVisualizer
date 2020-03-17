@@ -6,7 +6,10 @@ This programm is for people who want to see a stack in action.
   - SFML graphic library
   - Uses reverse polish notation (RPN)
   For a sample equation: (2 + 4)/3 * 4 + 1 + -5
+
   The RPN is:             2 4 + 3 / 4 * 1 + -5 +
+  
+  
   <img src="https://media.giphy.com/media/lqZ2ZyvCzLdidpIIHx/giphy.gif" />
   <img src="https://media.giphy.com/media/SAIbtkWRUwBgy0BgSD/giphy.gif" />
   

@@ -20,7 +20,11 @@ std::string tokenizeStr(std::string &str, char atChar) {
 }
 
 bool checkNr(std::string str) {
-    for(int i = 0; i < str.length(); i++) {
+    int i = 0;
+    if(str.at(0) == '-')
+        i++; // negative number => continue
+
+    for(; i < str.length(); i++) {
         if(!(static_cast<int>(str.at(i)) > 47 && static_cast<int>(str.at(i)) < 58))
             return false;
     }
@@ -50,4 +54,3 @@ int OPArithmetic(std::string &tok, std::vector<int> &Stack) {
     if(tok == "/")
         return Stack.at(Stack.size()-2) / Stack.at(Stack.size()-1);
 }
-

@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include <string>
+#include <thread>
 #include "lexer.h"
 
 #define WIDTH 200
@@ -20,7 +21,6 @@ void setText(sf::Text &text, std::string str, int y_pos) {
     text.setFillColor(sf::Color(160, 160, 160, 255));
     text.setStyle(sf::Text::Bold);
 }
-
 
 sf::RectangleShape createElem(int y_pos) {
     int R = rand() % 256;
@@ -42,11 +42,11 @@ template <typename T> void vec_pop_at(std::vector<T> &vec, int n) {
     vec.pop_back();
 }
 
-template <typename T>  void vec_align(std::vector<T> &Vec) {
+template <typename T>  void vec_align(std::vector<T> &Vec, sf::RenderWindow &wind) {
     int pos = HEIGHT-(REC_SIZE/2)+1;
     for(auto &it : Vec) {
         it.setPosition(WIDTH/2, pos);
-        pos -= REC_SIZE;
+        pos -= REC_SIZE;    // allign every element by vector size
     }
 }
 
@@ -68,7 +68,7 @@ int main() {
         }
 
         /// Main
-        std::cout << "Type a statement in RPN: ";
+        std::cout << "Type an equation in RPN: ";
         std::string str;
         std::getline(std::cin, str);
 
@@ -106,7 +106,6 @@ int main() {
         wind.display();
         sf::sleep(sf::milliseconds(1000));
 
-
         /// Parsing Stack
         sf::Text text2;
         text2.setFont(font); // font is a sf::Font
@@ -119,8 +118,8 @@ int main() {
             if(checkNr(token)) // number found -> push
                 nrVec.push_back(std::stoi(token));
 
-            else if(checkOP(token)) { // operator found
-                int result = OPArithmetic(token, nrVec);
+            else if(checkOP(token) && nrVec.size() > 1) { // operator found
+                int result = OPArithmetic(token, nrVec); // arithmetic operation
                 // remove last two stack elements
                 nrVec.pop_back();
                 nrVec.pop_back();
@@ -144,9 +143,10 @@ int main() {
                 vec_pop_at(elem_Vec, row-1);
 
                 row -= 2; // reduce row as two elements have been popped
+
                 // allign all vectors of the stack
-                vec_align(elem_Vec);
-                vec_align(text_Vec);
+                vec_align(elem_Vec, wind);
+                vec_align(text_Vec, wind);
                 sf::sleep(sf::milliseconds(1000));
             }
             row++;
